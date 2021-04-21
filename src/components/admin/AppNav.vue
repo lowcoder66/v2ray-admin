@@ -37,25 +37,17 @@
 </template>
 
 <script>
-import {mapMutations, mapState} from "vuex"
+import {mapMutations, mapState, mapGetters} from "vuex"
+import {toNavs} from "@/router/routers"
 
 export default {
   data() {
     return {
-      navs: [
-        {
-          name: "", children: [
-            {title: 'Dashboard', icon: 'mdi-view-dashboard-outline', path: '/'},
-            {title: 'Profile', icon: 'mdi-card-account-details-outline', path: '/profile'},
-          ]
-        },
-        {
-          name: "management", children: [
-            {title: 'Users', icon: 'mdi-account-group-outline', path: '/management/users'},
-          ]
-        }
-      ],
+      navs: [],
     }
+  },
+  created() {
+    this.navs = this.routersNav()
   },
   computed: {
     ...mapState({
@@ -63,6 +55,7 @@ export default {
       name: state => state.user.name,
       navDrawer: state => state.navDrawer,
     }),
+    ...mapGetters(['isAdmin']),
     showNavDrawer: {
       get() {
         return this.navDrawer;
@@ -74,6 +67,14 @@ export default {
   },
   methods: {
     ...mapMutations(["openNavDrawer"]),
+    routersNav() {
+      return toNavs(this.isAdmin)
+    }
+  },
+  watch: {
+    isAdmin() {
+      this.navs = this.routersNav()
+    }
   }
 }
 </script>

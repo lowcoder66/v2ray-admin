@@ -6,6 +6,7 @@ export default {
     email: readObjectProp(USER_INFO_KEY, "email"),
     name: readObjectProp(USER_INFO_KEY, "name"),
     token: readObject(TOKEN_KEY) || {},
+    info: null,
   },
   mutations: {
     setName(state, name) {
@@ -20,6 +21,9 @@ export default {
       state.token = {...token}
       writeObject(TOKEN_KEY, state.token)
     },
+    setUserInfo(state, info) {
+      state.info = info
+    },
   },
   getters: {
     tokenValue: (state, getters) => {
@@ -31,6 +35,12 @@ export default {
         return expireTime == null || compare(expireTime, Date.now()) <= 0
       }
       return true
+    },
+    existUserInfo: state => {
+      return !!state.info
+    },
+    isAdmin: state => {
+      return !!state.info && state.info.admin
     },
   },
   actions: {

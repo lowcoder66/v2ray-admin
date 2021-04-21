@@ -41,7 +41,7 @@
 
 <script>
 import {mapMutations, mapState} from "vuex"
-import {NewToken} from "@/api/admin/auth"
+import {GetPrincipal, NewToken} from "@/api/admin/auth"
 import AuthHead from "@/views/auth/components/AuthHead"
 
 export default {
@@ -51,6 +51,7 @@ export default {
     ...mapMutations([
         "setToken",
         "setEmail",
+        "setUserInfo",
     ]),
     submit() {
       if (this.$refs.form.validate()) {
@@ -60,7 +61,12 @@ export default {
           // email
           this.setEmail(this.form.username)
 
-          this.$router.push({ name: "index" });
+          // user info
+          GetPrincipal().then(ur => {
+            this.setUserInfo(ur.data)
+          }).finally(() => {
+            this.$router.push({ name: "index" });
+          })
         })
       }
     }

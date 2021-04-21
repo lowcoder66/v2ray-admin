@@ -22,7 +22,7 @@
                 </v-text-field>
               </v-col>
               <v-col cols="6">
-                <v-slider v-model="form.level" label="等级" :max="10" :min="1"  thumb-label ticks tick-size="1" ></v-slider>
+                <v-slider v-model="form.level" label="等级" :max="levelRange[1]" :min="levelRange[0]"  thumb-label ticks tick-size="1" ></v-slider>
               </v-col>
               <v-col cols="6">
                 <v-slider v-model="form.alterId" label="AlterId" :max="64" :min="4"  thumb-label ticks tick-size="1" ></v-slider>
@@ -56,6 +56,7 @@
 <script>
 import {AddUser, EditUser, GetUser} from "@/api/admin/management/users"
 import {randomUUIDStr} from "@/util/stringUtils"
+import {GetConfLevelRange} from "@/api/admin/configuration"
 
 export default {
   props: {
@@ -68,6 +69,7 @@ export default {
   data() {
     return {
       initialized: false,
+      levelRange: [1, 10],
       form: {
         email: null,
         uid: null,
@@ -112,6 +114,7 @@ export default {
   },
   created() {
     this.initialize()
+    this.loadLevelRange()
   },
   watch: {
     dialog(val) {
@@ -121,6 +124,11 @@ export default {
     }
   },
   methods: {
+    loadLevelRange() {
+      GetConfLevelRange().then(res => {
+        this.levelRange = res.data
+      })
+    },
     initialize() {
       this.initialized = false
       if (this.itemId) {

@@ -11,11 +11,12 @@
 </template>
 
 <script>
-import {mapMutations, mapState} from "vuex"
+import {mapGetters, mapMutations, mapState} from "vuex"
+import {GetPrincipal} from "@/api/admin/auth"
 
 export default {
   methods: {
-    ...mapMutations(["openNavDrawer"]),
+    ...mapMutations(["openNavDrawer", "setUserInfo"]),
     handleClickNavIcon() {
       this.openNavDrawer(!this.navDrawer)
     }
@@ -24,7 +25,15 @@ export default {
     ...mapState({
       navDrawer: state => state.navDrawer,
     }),
+    ...mapGetters(['existUserInfo']),
   },
+  created() {
+    if (!this.existUserInfo) {
+      GetPrincipal().then(res => {
+        this.setUserInfo(res.data)
+      })
+    }
+  }
 }
 </script>
 

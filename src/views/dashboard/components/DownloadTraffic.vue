@@ -8,13 +8,23 @@
     <div class="px-4 d-flex align-end">
       <div>
         <div class="subtitle-1">本月下载</div>
-        <span class="text-h5">837,32 GB</span>
+        <span class="text-h5">{{ formatTraffic(this.currentMonth)}}</span>
       </div>
       <v-spacer />
       <div class="text-right ">
         <div class="text-h5">
-          <v-icon color="success">mdi-arrow-bottom-right-thick</v-icon>
-          <span>2.2%</span>
+          <template v-if="trend === 0" >
+            <v-icon>mdi-trending-neutral</v-icon>
+            <span>-</span>
+          </template>
+          <template v-else-if="trend > 0" >
+            <v-icon color="error">mdi-trending-up</v-icon>
+            <span>{{ percentage(this.trend) }}</span>
+          </template>
+          <template v-else >
+            <v-icon color="success">mdi-trending-down</v-icon>
+            <span>{{ percentage(Math.abs(this.trend)) }}</span>
+          </template>
         </div>
       </div>
     </div>
@@ -26,9 +36,9 @@
           fill
           smooth="16"
           padding="0"
-          auto-draw
+          :auto-draw="!initialized"
           height="20"
-          :value="[375, 410, 390, 310, 460, 550, 240, 670]" >
+          :value="historyCurve" >
       </v-sparkline>
     </v-sheet>
 
@@ -36,7 +46,36 @@
 </template>
 
 <script>
-export default {}
+import trafficChart from "./trafficChart"
+import {GetDownTraffic} from "@/api/admin/management/dashboard"
+
+export default {
+  mixins: [trafficChart],
+  methods: {
+    refreshData() {
+      GetDownTraffic().then(res => {
+        this.history = res.data.history
+      })
+    },
+    initialize() {
+      GetDownTraffic().then(res => {
+        this.history = res.data.history
+      }).finally(() => {
+        this.initialized = true
+      })
+    },
+  },
+  data: () => ({
+  }),
+  computed: {
+    currentMonth() {
+      if (this.history && this.history.length > 0) {
+        return this.history[this.history.length - 1]
+      }
+      return 0
+    },
+  },
+}
 </script>
 
 <style scoped>

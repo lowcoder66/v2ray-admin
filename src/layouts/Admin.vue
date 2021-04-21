@@ -42,22 +42,54 @@ import AppBar from "@/components/admin/AppBar"
 export default {
   components: {AppBar, AppNav, AppAlerts, AppLoading},
   data: () => ({
-    items: [
-      {
-        text: 'Index',
-        disabled: false,
-        to: '/',
-        icon: 'mdi-view-dashboard-outline',
-      },
-      {
-        text: 'Users',
-        disabled: false,
-        to: '/management/users',
-        icon: 'mdi-account-group-outline',
-      },
-    ],
+    items: [ ],
   }),
-};
+  watch: {
+    '$route'(val) {
+      this.buildBreadcrumbs(val)
+    }
+  },
+  created() {
+    this.buildBreadcrumbs()
+  },
+  computed: {
+    indexBreadcrumb() {
+      let r = this.$router.match("/")
+      let b =  {
+        to: '/',
+        text: 'Index',
+        icon: 'mdi-view-dashboard-outline',
+        disabled: false,
+      }
+      if (r) {
+        b = this.routeToBreadcrumb(r)
+        b.text = "Index"
+      }
+
+      return b
+    }
+  },
+  methods: {
+    buildBreadcrumbs(route) {
+      let items = [this.indexBreadcrumb]
+
+      // 目前只考虑两层
+      if (route && route.path !== this.indexBreadcrumb.to) {
+        items.push(this.routeToBreadcrumb(route))
+      }
+
+      this.items = items
+    },
+    routeToBreadcrumb(route) {
+      return {
+        text: (route.meta && route.meta.title) || route.name,
+        to: route.path,
+        icon: (route.meta && route.meta.icon) || 'mdi-chevron-right',
+        disabled: false,
+      }
+    }
+  },
+}
 </script>
 
 <style scoped>
