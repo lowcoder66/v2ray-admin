@@ -7,6 +7,10 @@ export const formatSize = (size, digits = 2) => {
     let index = 0
     let srcSize = parseFloat(size)
     index = Math.floor(Math.log(srcSize) / Math.log(1024))
+    if (index > 8) {
+        index = 8
+    }
+
     let formatted = srcSize / Math.pow(1024, index)
     formatted = formatted.toFixed(digits)
     return formatted + " " + unitArr[index]

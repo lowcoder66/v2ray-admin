@@ -49,6 +49,7 @@
       <template v-slot:item.locked="{ item }">
         <v-switch inset class="mt-0" hide-details readonly v-model="item.locked"></v-switch>
       </template>
+      <template v-slot:item.limit="{ item }">{{ formatLimit(item.limit)}}</template>
       <template v-slot:item.actions="{ item }">
         <v-btn @click="editItem(item)" class="mr-2" color="primary darken-1" outlined>
           <v-icon left  >mdi-pencil</v-icon>
@@ -67,17 +68,19 @@
 <script>
 import SaveDialog from "@/views/management/users/components/SaveDialog"
 import {DelUser, ListUser} from "@/api/admin/management/users"
+import {formatSize} from "@/util/numberUtils"
 
 export default {
   components: {SaveDialog},
   data: () => ({
     headers: [
-      { text: 'ID', value: 'uid' },
-      { text: '邮箱', value: 'email' },
-      { text: '姓名', value: 'name' },
-      { text: '等级', value: 'level' },
-      { text: '启用', value: 'enabled'},
-      { text: '锁定', value: 'locked'},
+      { text: 'ID', value: 'uid', sortable: false },
+      { text: '邮箱', value: 'email', sortable: false },
+      { text: '姓名', value: 'name', sortable: false },
+      { text: '等级', value: 'level', sortable: false },
+      { text: '限额', value: 'limit', sortable: false },
+      { text: '启用', value: 'enabled', sortable: false},
+      { text: '锁定', value: 'locked', sortable: false},
       { text: '操作', value: 'actions', sortable: false, align: 'right' },
     ],
     userPage: {},
@@ -101,6 +104,9 @@ export default {
     }
   },
   methods: {
+    formatLimit(size) {
+      return formatSize(size)
+    },
     initialize () {
       let params = Object.assign({}, this.searchForm, this.pageParams)
       ListUser(params).then(res => this.userPage = res.data)

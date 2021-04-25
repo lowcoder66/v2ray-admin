@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "base64-js": "^1.5.1",
     "core-js": "^3.6.5",
     "moment": "^2.29.1",
+    "qrcode": "^1.4.4",
     "vue": "^2.6.11",
     "vue-router": "^3.5.1",
     "vuetify": "^2.4.0",

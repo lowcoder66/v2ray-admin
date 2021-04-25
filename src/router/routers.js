@@ -1,7 +1,6 @@
 import AdminLayout from "@/layouts/Admin"
 import BasicLayout from "@/layouts/Basic"
 import Login from "@/views/auth/Login"
-import Dashboard from "@/views/dashboard/Index"
 import ForgotPassword from "@/views/auth/ForgotPassword"
 import E404 from "@/views/error/404"
 import E403 from "@/views/error/403"
@@ -63,10 +62,19 @@ const _adminRoutes = [
       {
         path: "/",
         name: "index",
-        component: Dashboard,
+        component: () => import('@/views/dashboard/Index'),
         meta: {
           title: "仪表盘",
           icon: "mdi-view-dashboard-variant",
+        },
+      },
+      {
+        path: "/profile",
+        name: "profile",
+        component: () => import('@/views/profile/Index'),
+        meta: {
+          title: "个人设置",
+          icon: "mdi-account-details-outline",
         },
       },
     ],

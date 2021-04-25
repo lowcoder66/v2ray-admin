@@ -23,6 +23,7 @@ export default {
     },
     setUserInfo(state, info) {
       state.info = info
+      writeObject(USER_INFO_KEY, {name: state.info.name, email: state.info.email})
     },
   },
   getters: {
@@ -43,7 +44,4 @@ export default {
       return !!state.info && state.info.admin
     },
   },
-  actions: {
-
-  }
 }

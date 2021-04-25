@@ -21,23 +21,26 @@
                   </template>
                 </v-text-field>
               </v-col>
-              <v-col cols="6">
-                <v-slider v-model="form.level" label="等级" :max="levelRange[1]" :min="levelRange[0]"  thumb-label ticks tick-size="1" ></v-slider>
-              </v-col>
-              <v-col cols="6">
-                <v-slider v-model="form.alterId" label="AlterId" :max="64" :min="4"  thumb-label ticks tick-size="1" ></v-slider>
-              </v-col>
               <v-col cols="5">
                 <v-text-field v-model="form.name" label="姓名" :rules="rules.name" ></v-text-field>
               </v-col>
               <v-col cols="7">
                 <v-text-field v-model="form.phone" label="电话" ></v-text-field>
               </v-col>
-              <v-col cols="6">
-                <v-switch v-model="form.enabled" :label="form.enabled ? '已启用' : '未启用'"></v-switch>
+              <v-col cols="12">
+                <v-text-field v-model.number="form.limit" label="限额" type="number" suffix=" Bytes" :hint="limitHint"  persistent-hint></v-text-field>
               </v-col>
               <v-col cols="6">
-                <v-switch v-model="form.locked" :label="form.locked ? '已锁定' : '未锁定' "></v-switch>
+                <v-slider hide-details v-model="form.level" label="等级" :max="levelRange[1]" :min="levelRange[0]"  thumb-label ticks tick-size="1" ></v-slider>
+              </v-col>
+              <v-col cols="6">
+                <v-slider hide-details v-model="form.alterId" label="AlterId" :max="64" :min="4"  thumb-label ticks tick-size="1" ></v-slider>
+              </v-col>
+              <v-col cols="6">
+                <v-switch hide-details v-model="form.enabled" :label="form.enabled ? '已启用' : '未启用'"></v-switch>
+              </v-col>
+              <v-col cols="6">
+                <v-switch hide-details v-model="form.locked" :label="form.locked ? '已锁定' : '未锁定' "></v-switch>
               </v-col>
             </v-row>
           </v-container>
@@ -57,6 +60,7 @@
 import {AddUser, EditUser, GetUser} from "@/api/admin/management/users"
 import {randomUUIDStr} from "@/util/stringUtils"
 import {GetConfLevelRange} from "@/api/admin/configuration"
+import {formatSize} from "@/util/numberUtils"
 
 export default {
   props: {
@@ -79,6 +83,7 @@ export default {
         phone: null,
         enabled: true,
         locked: false,
+        limit: 0,
       },
       valid: false,
       rules: {
@@ -97,6 +102,9 @@ export default {
     }
   },
   computed: {
+    limitHint() {
+      return formatSize(this.form.limit)
+    },
     formTitle () {
       return this.itemId ? '编辑用户' : '新增用户'
     },
