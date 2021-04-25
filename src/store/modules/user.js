@@ -17,13 +17,15 @@ export default {
       state.email = email
       writeObject(USER_INFO_KEY, {email, name: state.name})
     },
-    setToken (state, token) {
+    setToken (state, token = {}) {
       state.token = {...token}
       writeObject(TOKEN_KEY, state.token)
     },
     setUserInfo(state, info) {
       state.info = info
-      writeObject(USER_INFO_KEY, {name: state.info.name, email: state.info.email})
+      if (state.info) {
+        writeObject(USER_INFO_KEY, {name: state.info.name, email: state.info.email})
+      }
     },
   },
   getters: {

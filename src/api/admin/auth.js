@@ -22,3 +22,8 @@ export const ResetPassword = (data) => Request({
   method: 'post',
   data
 });
+
+export const RevokeToken = () => Request({
+  url: '/token',
+  method: 'delete',
+});

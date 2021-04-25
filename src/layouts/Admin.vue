@@ -57,13 +57,13 @@ export default {
       let r = this.$router.match("/")
       let b =  {
         to: '/',
-        text: 'Index',
+        text: '首页',
         icon: 'mdi-view-dashboard-outline',
         disabled: false,
       }
       if (r) {
         b = this.routeToBreadcrumb(r)
-        b.text = "Index"
+        b.text = "首页"
       }
 
       return b
