@@ -2,12 +2,12 @@
   <v-navigation-drawer app v-model="showNavDrawer">
     <v-list slot="prepend">
       <v-list-item class="px-4 py-1">
-        <v-list-item-avatar>
+        <v-list-item-avatar tile>
           <img alt="app-logo" src="@/assets/logo.svg" width="80" height="80"/>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title>
-            <span class="title primary--text">Vuetify Admin</span>
+            <span class="title primary--text">{{  title }}</span>
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -64,6 +64,9 @@ export default {
         this.openNavDrawer(value)
       }
     },
+    title() {
+      return process.env.VUE_APP_TITLE || 'Vuetify Admin'
+    }
   },
   methods: {
     ...mapMutations(["openNavDrawer"]),
