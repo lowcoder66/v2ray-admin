@@ -34,7 +34,7 @@
                 <v-slider hide-details v-model="form.level" label="等级" :max="levelRange[1]" :min="levelRange[0]"  thumb-label ticks tick-size="1" ></v-slider>
               </v-col>
               <v-col cols="6">
-                <v-slider hide-details v-model="form.alterId" label="AlterId" :max="64" :min="4"  thumb-label ticks tick-size="1" ></v-slider>
+                <v-slider hide-details v-model="form.alterId" label="AlterId" :max="64" :min="0"  thumb-label ticks tick-size="1" ></v-slider>
               </v-col>
               <v-col cols="6">
                 <v-switch hide-details v-model="form.enabled" :label="form.enabled ? '已启用' : '未启用'"></v-switch>
